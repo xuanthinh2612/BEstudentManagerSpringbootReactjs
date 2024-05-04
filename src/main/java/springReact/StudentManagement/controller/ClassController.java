@@ -24,6 +24,12 @@ public class ClassController {
         return new ResponseEntity<>(classListDto, HttpStatus.OK);
     }
 
+    @GetMapping("/getClass/{id}")
+    public ResponseEntity<SchoolClassDto> getClassById(@PathVariable("id") Long classId) {
+        SchoolClassDto classDto = schoolClassService.findById(classId);
+        return new ResponseEntity<>(classDto, HttpStatus.OK);
+    }
+
     @Transactional
     @PostMapping(value = {"/create", "/update"})
     public ResponseEntity<SchoolClassDto> createNewClass(@RequestBody SchoolClassDto schoolClassDto) {
