@@ -1,0 +1,10 @@
+map model to dto object
+
+for example
+
+public static ObjectDto mapModelToDto(ModelObject object) {
+    return new ObjectDto(
+        object.id,
+        object.properties
+    );
+}

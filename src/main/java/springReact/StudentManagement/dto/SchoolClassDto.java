@@ -1,6 +1,6 @@
-package springReact.StudentManagement.model;
+package springReact.StudentManagement.dto;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,18 +8,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
-@Entity
-public class SchoolClass {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+@NoArgsConstructor
+public class SchoolClassDto {
     private Long id;
-
-    @Column
     private String name;
-
-    @Column
     private String description;
 }

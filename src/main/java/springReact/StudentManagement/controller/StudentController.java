@@ -1,14 +1,12 @@
 package springReact.StudentManagement.controller;
 
-import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
-import springReact.StudentManagement.model.Student;
-import springReact.StudentManagement.service.iService.SchoolClassService;
-import springReact.StudentManagement.service.iService.StudentService;
+import springReact.StudentManagement.dto.StudentDto;
+import springReact.StudentManagement.service.StudentService;
 
 import java.util.List;
 
@@ -18,24 +16,19 @@ import java.util.List;
 public class StudentController {
     @Autowired
     StudentService studentService;
-    @Autowired
-    EntityManager entityManager;
-
-    @Autowired
-    SchoolClassService schoolClassService;
 
     @GetMapping("/list")
-    public ResponseEntity<List<Student>> findAllStudent() {
-        List<Student> resultList = studentService.findAdd();
+    public ResponseEntity<List<StudentDto>> findAllStudent() {
+        List<StudentDto> resultList = studentService.findAdd();
         return new ResponseEntity<>(resultList, HttpStatus.OK);
     }
 
     @Transactional
     @PostMapping(value = {"/create", "/update"})
-    public ResponseEntity<Student> createStudent(@RequestBody Student student) {
+    public ResponseEntity<StudentDto> createStudent(@RequestBody StudentDto studentDto) {
 
         try {
-            Student savedStudent = studentService.save(student);
+            StudentDto savedStudent = studentService.save(studentDto);
             return new ResponseEntity<>(savedStudent, HttpStatus.OK);
         } catch (Exception e) {
             // Handle any exceptions appropriately, such as logging or returning an error response
@@ -44,9 +37,9 @@ public class StudentController {
     }
 
     @GetMapping("/getStudent/{id}")
-    public ResponseEntity<Student> getStudentById(@PathVariable Long id) {
-        Student student = studentService.findById(id);
-        return new ResponseEntity<>(student, HttpStatus.OK);
+    public ResponseEntity<StudentDto> getStudentById(@PathVariable("id") Long studentId) {
+        StudentDto studentDto = studentService.findById(studentId);
+        return new ResponseEntity<>(studentDto, HttpStatus.OK);
     }
 
     @DeleteMapping("/delete/{id}")
