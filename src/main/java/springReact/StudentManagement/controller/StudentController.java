@@ -3,6 +3,7 @@ package springReact.StudentManagement.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import springReact.StudentManagement.dto.StudentDto;
@@ -17,6 +18,7 @@ public class StudentController {
     @Autowired
     StudentService studentService;
 
+    @PreAuthorize("hasRole('USER')")
     @GetMapping("/list")
     public ResponseEntity<List<StudentDto>> findAllStudent() {
         List<StudentDto> resultList = studentService.findAdd();
@@ -36,6 +38,7 @@ public class StudentController {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/getStudent/{id}")
     public ResponseEntity<StudentDto> getStudentById(@PathVariable("id") Long studentId) {
         StudentDto studentDto = studentService.findById(studentId);
