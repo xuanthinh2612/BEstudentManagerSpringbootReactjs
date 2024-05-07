@@ -15,6 +15,7 @@ import springReact.StudentManagement.model.Role;
 import springReact.StudentManagement.model.User;
 import springReact.StudentManagement.repository.RoleRepository;
 import springReact.StudentManagement.repository.UserRepository;
+import springReact.StudentManagement.security.JwtTokenProvider;
 import springReact.StudentManagement.service.AuthService;
 
 import java.util.HashSet;
@@ -28,6 +29,7 @@ public class AuthServiceImpl implements AuthService {
     private RoleRepository roleRepository;
     private UserRepository userRepository;
     private AuthenticationManager authenticationManager;
+    private JwtTokenProvider jwtTokenProvider;
 
     @Override
     public String register(RegisterDto registerDto) {
@@ -66,6 +68,7 @@ public class AuthServiceImpl implements AuthService {
                 loginDto.getPassword()
         ));
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        return "User logged-in successfully!.";
+        String token = jwtTokenProvider.generateToken(authentication);
+        return token;
     }
 }
