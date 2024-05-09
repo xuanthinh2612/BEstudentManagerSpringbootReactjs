@@ -1,6 +1,8 @@
 package springReact.StudentManagement.controller;
 
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +17,8 @@ import springReact.StudentManagement.service.AuthService;
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
+    // Get the SLF4J logger interface, default Logback, a SLF4J implementation
+    private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
 
     @Autowired
     private AuthService authService;
@@ -30,10 +34,9 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<JwtAuthResponse> login(@RequestBody LoginDto loginDto) {
-        String token = authService.login(loginDto);
-
-        JwtAuthResponse jwtAuthResponse = new JwtAuthResponse();
-        jwtAuthResponse.setAccessToken(token);
+        JwtAuthResponse jwtAuthResponse = authService.login(loginDto);
+//        logger.debug("Debug level - Hello Logback");
+        logger.info("Login Success.");
 
         return new ResponseEntity<>(jwtAuthResponse, HttpStatus.OK);
     }

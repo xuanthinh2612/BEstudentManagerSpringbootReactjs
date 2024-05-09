@@ -18,13 +18,14 @@ public class StudentController {
     @Autowired
     StudentService studentService;
 
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping("/list")
     public ResponseEntity<List<StudentDto>> findAllStudent() {
         List<StudentDto> resultList = studentService.findAdd();
         return new ResponseEntity<>(resultList, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @Transactional
     @PostMapping(value = {"/create", "/update"})
     public ResponseEntity<StudentDto> createStudent(@RequestBody StudentDto studentDto) {
@@ -38,13 +39,15 @@ public class StudentController {
         }
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+
+    @PreAuthorize("hasAnyRole('ADMIN','USER')")
     @GetMapping("/getStudent/{id}")
     public ResponseEntity<StudentDto> getStudentById(@PathVariable("id") Long studentId) {
         StudentDto studentDto = studentService.findById(studentId);
         return new ResponseEntity<>(studentDto, HttpStatus.OK);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Boolean> deleteStudentById(@PathVariable Long id) {
         studentService.deleteById(id);
