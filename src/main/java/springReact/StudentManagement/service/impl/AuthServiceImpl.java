@@ -8,6 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 import springReact.StudentManagement.dto.LoginDto;
 import springReact.StudentManagement.dto.RegisterDto;
 import springReact.StudentManagement.exception.AppAPIException;
@@ -89,5 +90,29 @@ public class AuthServiceImpl implements AuthService {
         jwtAuthResponse.setRole(role);
         jwtAuthResponse.setAccessToken(token);
         return jwtAuthResponse;
+    }
+
+    @Override
+    public JwtAuthResponse loginOrCreateBySNS(LoginDto loginDto) {
+        String DEFAULT_PASSWORD_FOR_SNS_USER = "defaultPasswordForSNSUser";
+        User existUser = userRepository.findByUsernameOrEmail(loginDto.getUsernameOrEmail(), loginDto.getUsernameOrEmail()).orElse(null);
+        if (ObjectUtils.isEmpty(existUser)) {
+            User userSNS = new User();
+
+            userSNS.setName(loginDto.getName());
+            userSNS.setUsername(loginDto.getUsernameOrEmail());
+            userSNS.setEmail(loginDto.getUsernameOrEmail());
+            userSNS.setPhotoUrl(loginDto.getPhotoUrl());
+            userSNS.setProvider(loginDto.getProvider());
+            userSNS.setPassword(passwordEncoder.encode(DEFAULT_PASSWORD_FOR_SNS_USER));
+
+            Set<Role> roles = new HashSet<>();
+            Role role = roleRepository.findByName("ROLE_USER");
+            roles.add(role);
+            userSNS.setRoles(roles);
+            userRepository.save(userSNS);
+        }
+        loginDto.setPassword(DEFAULT_PASSWORD_FOR_SNS_USER);
+        return login(loginDto);
     }
 }

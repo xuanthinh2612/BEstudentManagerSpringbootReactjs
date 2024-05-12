@@ -25,6 +25,8 @@ public class User {
     private String email;
     @Column(nullable = true)
     private String password;
+    private String photoUrl;
+    private String provider;
 
     //  fetch = FetchType.EAGER: Thuộc tính này xác định cách mà dữ liệu của thực thể liên quan sẽ được truy xuất từ cơ sở dữ liệu
     //  khi thực thể chính được truy vấn. Trong trường hợp FetchType.EAGER, dữ liệu liên quan sẽ được truy xuất ngay lập tức

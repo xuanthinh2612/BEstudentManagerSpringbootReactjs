@@ -40,4 +40,11 @@ public class AuthController {
 
         return new ResponseEntity<>(jwtAuthResponse, HttpStatus.OK);
     }
+    @PostMapping("/loginBySNS")
+    public ResponseEntity<JwtAuthResponse> loginBySNS(@RequestBody LoginDto loginDto) {
+        JwtAuthResponse jwtAuthResponse = authService.loginOrCreateBySNS(loginDto);
+        logger.info("Login By SNS.");
+
+        return new ResponseEntity<>(jwtAuthResponse, HttpStatus.OK);
+    }
 }
