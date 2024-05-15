@@ -1,0 +1,9 @@
+1. thêm dependencies
+
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+
+2. thêm file config SpringSecurityConfig
+
+3. tạo CustomUserDetailsService
+
+thạo thêm User, role, repository, service cho user và role
